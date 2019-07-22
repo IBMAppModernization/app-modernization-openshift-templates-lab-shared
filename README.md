@@ -81,6 +81,8 @@ In this lab you'll use these  capabilities can be used to deploy a small legacy 
 | MariaDB Connection Password | `l1bertyR0cks` |
 | MariaDB Database Name | `plantsdb`|
 
+  When you're done the dialog should look like the following:
+
    ![DB values](images/ss5.5.png)
 
 3.7 Scroll down to the **Labels** section and change the **app** label value to `pbw-liberty-mariadb`
