@@ -27,24 +27,32 @@ In this lab you'll use these  capabilities can be used to deploy a small legacy 
    ```bash
    export INTERNAL_REG_HOST=`oc get route docker-registry --template='{{ .spec.host }}' -n default`
    ```
+
 2.2 Create a new OpenShift project for this lab
 
    ```bash
    oc new-project pbw-liberty-mariadb
    ```
 
-2.3 Tag the Websphere Liberty base image from Docker Hub appropriately for the internal registry
+2.4 Download  the Websphere Liberty base image
+
+  ```bash
+  docker pull websphere-liberty:javaee7
+  ```      
+  
+2.5 Tag the Websphere Liberty base image from Docker Hub appropriately for the internal registry
 
    ```bash
    docker tag websphere-liberty:javaee7  $INTERNAL_REG_HOST/`oc project -q`/websphere-liberty:javaee7
    ```
 
-2.4 Login to the internal registry
+2.6 Login to the internal registry
 
    ```bash
    docker login -u `oc whoami` -p `oc whoami -t` $INTERNAL_REG_HOST
    ```
-2.5 Push the Websphere Liberty base image to the internal registry
+
+2.7 Push the Websphere Liberty base image to the internal registry
 
    ```bash
     docker push $INTERNAL_REG_HOST/`oc project -q`/websphere-liberty:javaee7
