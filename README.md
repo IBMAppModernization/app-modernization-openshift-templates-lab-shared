@@ -2,11 +2,11 @@
 
 ## Lab - Migrating Legacy JEE apps to OpenShift in a multi-user lab environment
 
-### Working with S2I and Templates
+### Working with Templates
 
 ## Overview
 
-S2I in a tool deployed in OpenShift that provides a repeatable method to generate application images from source/binary code Templates provide a parameterized set of objects that can be processed by OpenShift. Templates provide a parameterized set of objects that can be processed by OpenShift.
+OpenShift Templates provide a parameterized set of objects that can be processed by OpenShift. Templates enable developers to create repeatable parameterized deployments that minimize mistakes due to user error.
 
 In this lab you'll use these  capabilities can be used to deploy a small legacy  Java EE app to OpenShift in a multi-user OpenShift environment
 
@@ -20,41 +20,34 @@ In this lab you'll use these  capabilities can be used to deploy a small legacy 
 
 1.3 Paste the login command in a terminal window and run it (Note: leave the web console browser tab open as you'll need it later on in the lab)
 
-### Step 2: Clone the WebSphere Liberty S2I image source, create a Docker image,  and push it to the OpenShift internal registry
+### Step 2: Pull the Websphere Liberty base image from Docker Hub and push it to the OpenShift internal registry
 
-2.1 Clone the  the WebSphere Liberty S2I image source by issuing the following commands in the terminal window you just used to login via the CLI
-
-   ```bash
-   git clone https://github.com/IBMAppModernization/s2i-liberty-javaee7.git
-   cd s2i-liberty-javaee7
-   ```
-
-2.2 Get the hostname of your OpenShift internal registry so you can push images to it
+2.1 Get the hostname of your OpenShift internal registry so you can push images to it
 
    ```bash
    export INTERNAL_REG_HOST=`oc get route docker-registry --template='{{ .spec.host }}' -n default`
    ```
-2.3 Create a new OpenShift project for this lab (**Note:** your project name must be unique. We suggest you use `pbw-usernnn` where `usernnn` is your username e.g. `user012`)
+2.2 Create a new OpenShift project for this lab
 
    ```bash
-   oc new-project pbw-usernnn
+   oc new-project pbw-liberty-mariadb
    ```
 
-2.4 Build the S2I Liberty image and tag it appropriately for the internal registry
+2.3 Tag the Websphere Liberty base image from Docker Hub appropriately for the internal registry
 
    ```bash
-   docker build -t $INTERNAL_REG_HOST/`oc project -q`/s2i-liberty-javaee7:1.0 .
+   docker tag websphere-liberty:javaee7  $INTERNAL_REG_HOST/`oc project -q`/websphere-liberty:javaee7
    ```
 
-2.5 Login to the internal registry
+2.4 Login to the internal registry
 
    ```bash
    docker login -u `oc whoami` -p `oc whoami -t` $INTERNAL_REG_HOST
    ```
-2.6 Push the S2I Liberty image to the internal registry
+2.5 Push the Websphere Liberty base image to the internal registry
 
    ```bash
-    docker push $INTERNAL_REG_HOST/`oc project -q`/s2i-liberty-javaee7:1.0
+    docker push $INTERNAL_REG_HOST/`oc project -q`/websphere-liberty:javaee7
    ```
 
 ### Step 3: Install MariaDB from the OpenShift template catalog
@@ -101,6 +94,7 @@ In this lab you'll use these  capabilities can be used to deploy a small legacy 
 
    ![Pod running](images/ss7.png)
 
+
 ### Step 4: Clone the Github repo that contains the code for the Plants by WebSphere app
 
 4.1  Login in [your Github account](https://github.com)
@@ -129,34 +123,26 @@ In this lab you'll use these  capabilities can be used to deploy a small legacy 
 
 ### Step 5: Install the Plants by WebSphere Liberty app using a template that utilizes S2I to build the app image   
 
-5.1 From your terminal go back to your home directory
+5.1 Add the Plants by WebSphere Liberty app template to your OpenShift cluster
 
    ```bash
-   cd ~
+   oc create -f openshift/templates/docker/pbw-liberty-template.yaml
    ```
-
-5.2 Clone the Plants by WebSphere Liberty GitHub repo by issuing the following commands
-
-   ```bash
-   git clone https://github.com/IBMAppModernization/app-modernization-plants-by-websphere-jee6
-   cd app-modernization-plants-by-websphere-jee6/openshift/templates
-   ```
-5.3 Add the Plants by WebSphere Liberty app template to your OpenShift cluster
-
-   ```bash
-   oc create -f pbw-liberty-template.yaml
-   ```
-5.4 In your Web console browser tab make sure you're in the **pbw-usernnn** project (top left) and click on **Add to Project -> Browse Catalog** (top right)
+5.2 In your Web console browser tab make sure you're in the **pbw-usernnn** project (top left) and click on **Add to Project -> Browse Catalog** (top right)
 
    ![View All](images/ss8.png)
 
-5.5 Select the **Other** category and then click **Plants by WebSphere on Liberty**
+5.3 Select the **Other** category and then click **Plants by WebSphere on Liberty**
 
-5.6 Accept all the default values and click **Create**
+5.4 Enter the URL of your clone of the Plants by WebSphere Github repository
 
-5.7 Click  **Continue to the project overview**
+   ![View All](images/ss8.5.png)
 
-5.8 Wait until the Pod for the Plants by WebSphere app on Liberty shows as running and then click on the route to get to the app's endpoint
+5.5 Accept all the other default values and click **Create**
+
+5.6 Click  **Continue to the project overview**
+
+5.7 Wait until the Pod for the Plants by WebSphere app on Liberty shows as running and then click on the route to get to the app's endpoint
 
    ![Launch app](images/ss9.png)
 
