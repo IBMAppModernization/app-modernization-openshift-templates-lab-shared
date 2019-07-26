@@ -34,25 +34,25 @@ In this lab you'll use these  capabilities can be used to deploy a small legacy 
    oc new-project pbw-liberty-mariadb
    ```
 
-2.4 Download  the Websphere Liberty base image
+2.3 Download  the Websphere Liberty base image
 
   ```bash
   docker pull websphere-liberty:javaee7
   ```      
-  
-2.5 Tag the Websphere Liberty base image from Docker Hub appropriately for the internal registry
+
+2.4 Tag the Websphere Liberty base image from Docker Hub appropriately for the internal registry
 
    ```bash
    docker tag websphere-liberty:javaee7  $INTERNAL_REG_HOST/`oc project -q`/websphere-liberty:javaee7
    ```
 
-2.6 Login to the internal registry
+2.5 Login to the internal registry
 
    ```bash
    docker login -u `oc whoami` -p `oc whoami -t` $INTERNAL_REG_HOST
    ```
 
-2.7 Push the Websphere Liberty base image to the internal registry
+2.6 Push the Websphere Liberty base image to the internal registry
 
    ```bash
     docker push $INTERNAL_REG_HOST/`oc project -q`/websphere-liberty:javaee7
