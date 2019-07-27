@@ -168,4 +168,4 @@ In this lab you'll use these  capabilities can be used to deploy a small legacy 
 
 ## Summary
 
-With even small simple apps requiring multiple OpenShift  objects,  templates  greatly simplify the process of distributing OpenShift  apps. S2I allows you to reuse the  same builder image for apps on the same app server, avoiding  the effort of having to create unique images for each app.
+With even small simple apps requiring multiple OpenShift  objects,  templates  greatly simplify the process of distributing OpenShift  apps. 
