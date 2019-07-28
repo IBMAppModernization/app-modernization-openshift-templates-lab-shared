@@ -28,10 +28,10 @@ In this lab you'll use these  capabilities can be used to deploy a small legacy 
    export INTERNAL_REG_HOST=`oc get route docker-registry --template='{{ .spec.host }}' -n default`
    ```
 
-2.2 Create a new OpenShift project for this lab
+2.2 Create a new OpenShift project for this lab (Note: your project name must be unique. We suggest you use pbw-usernnn where usernnn is your username for the project name  e.g. user012)
 
    ```bash
-   oc new-project pbw-liberty-mariadb
+   oc new-project [YOUR PROJECT NAME]
    ```
 
 2.3 Download  the Websphere Liberty base image
@@ -168,4 +168,4 @@ In this lab you'll use these  capabilities can be used to deploy a small legacy 
 
 ## Summary
 
-With even small simple apps requiring multiple OpenShift  objects,  templates  greatly simplify the process of distributing OpenShift  apps. 
+With even small simple apps requiring multiple OpenShift  objects,  templates  greatly simplify the process of distributing OpenShift  apps.
